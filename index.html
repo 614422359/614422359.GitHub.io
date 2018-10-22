@@ -147,6 +147,33 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2018/10/22/LOIC/">
+                LOIC
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-10-22</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="入门级Dos攻击工具LOIC的使用"><a href="#入门级Dos攻击工具LOIC的使用" class="headerlink" title="入门级Dos攻击工具LOIC的使用"></a>入门级Dos攻击工具LOIC的使用</h1><p>LOIC被誉为低轨道粒子炮是一款专著于web应用程序的Dos/<a href="https://www.baidu.com/s?wd=DDOS%E6%94%BB%E5%87%BB&amp;tn=SE_PcZhidaonwhc_ngpagmjz&amp;rsv_dl=gh_pc_zhidao" target="_blank" rel="noopener">DDOS攻击</a>工具，它可以用TCP数据包、UDP数据包、<a href="https://www.baidu.com/s?wd=HTTP%E8%AF%B7%E6%B1%82&amp;tn=SE_PcZhidaonwhc_ngpagmjz&amp;rsv_dl=gh_pc_zhidao" target="_blank" rel="noopener">HTTP请求</a>于对目标网站进行DDOS/DOS测试，不怀好意的人可能利用LOIC构建僵尸网络。如果进行ddos攻击的话很有可能导致较弱的服务器的网站直接无法访问503错误，因为服务器资源被大量占用。</p>
+        </div>
+        <a href="/2018/10/22/LOIC/" class="read-more">Read More</a>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2018/10/21/The-first/">
                 The-first
             </a>
@@ -166,65 +193,8 @@
 <p>今天是搭建好博客的第二天qwq，百团大战热闹的很（除了我没中过一次将之外）都还不错，转眼间又到了九点半了，觉得日子过得真快啊。</p>
 <p>“时间如沙，我握不住她也握不住它”（讲正事：</p>
 <p>nc是netcat的简写，有着网络界的瑞士军刀美誉。因为它短小精悍、功能实用，被设计为一个简单、可靠的网络工具。</p>
-<p>nc的作用：</p>
-<p>（1）实现任意TCP/UDP端口的侦听，nc可以作为server以TCP或UDP方式侦听指定端口 </p>
-<p>（2）端口的扫描，nc可以作为client发起TCP或UDP连接</p>
-<p>（3）机器之间传输文件</p>
-<p>（4）机器之间网络测速 </p>
-<p>nc基本命令：</p>
-<p>1) -l</p>
-<p>用于指定nc将处于侦听模式。指定该参数，则意味着nc被当作server，侦听并接受连接，而非向其它地址发起连接。</p>
-<p>2) -p  post</p>
-<p>暂未用到（老版本的nc可能需要在端口号前加-p参数，下面测试环境是centos6.6，nc版本是nc-1.84，未用到-p参数）</p>
-<p>3) -s </p>
-<p>指定发送数据的源IP地址，适用于多网卡机 </p>
-<p>4) -u</p>
-<p> 指定nc使用UDP协议，默认为TCP</p>
-<p>5) -v</p>
-<p>输出交互或出错信息，新手调试时尤为有用</p>
-<p>6）-w</p>
-<p>超时秒数，后面跟数字 </p>
-<p>7）-z</p>
-<p>表示zero，表示扫描时不发送任何数据</p>
-<p>（时间不够，不写了，直接放csdn地址：</p>
-<p><a href="https://forwhfang.github.io" target="_blank" rel="noopener">https://forwhfang.github.io</a></p>
-
         </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/10/19/hello-world/">
-                Hello World
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-10-19</span>
-            
-            
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-        </div>
+        <a href="/2018/10/21/The-first/" class="read-more">Read More</a>
     
 
 </div>
@@ -258,11 +228,11 @@
         <ul>
             
             <li>
-                <a class="footer-post" href="/2018/10/21/The-first/">The-first</a>
+                <a class="footer-post" href="/2018/10/22/LOIC/">LOIC</a>
             </li>
             
             <li>
-                <a class="footer-post" href="/2018/10/19/hello-world/">Hello World</a>
+                <a class="footer-post" href="/2018/10/21/The-first/">The-first</a>
             </li>
             
         </ul>
