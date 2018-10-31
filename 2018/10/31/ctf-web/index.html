@@ -170,18 +170,18 @@
 <p>平时网站上有很多可以本地上传的选项，有一些网站的防护性不好，如果我们上传了一串恶意的代码的话，就会对网站造成一些损害，尤其是上传一句话木马利用菜刀就可以做到链接目标的后台数据库。</p>
 <a id="more"></a>
 <h4 id="0x01-前端的验证"><a href="#0x01-前端的验证" class="headerlink" title="0x01:前端的验证"></a>0x01:前端的验证</h4><p>对于很多页面是利用一段js的脚本实现对后缀名的过滤的，一般这种bp还没有抓到包的时候前端页面就会发出警告，对于这样的页面我们可以利用对前端的js代码进行修改从而绕过前端的验证。可以修改成自己的php类型等等。。</p>
-<p><img src="/2018/10/31/ctf-web/./ctf-web/1.png" alt="前端代码修改"></p>
+<p><img src="/2018/10/31/ctf-web/1.png" alt="前端代码修改"></p>
 <h4 id="0x02-服务器端MIME类型检测绕过"><a href="#0x02-服务器端MIME类型检测绕过" class="headerlink" title="0x02:服务器端MIME类型检测绕过"></a>0x02:服务器端MIME类型检测绕过</h4><p>如果文件上传之后却显示不符合规格，那么有可能是服务器端的MIME类型检测当用户上传文件到服务器端的时候，服务器端的程序会获取上传文件的MIME类型，然后用这个获取到的类型来和期望的MIME类型进行匹配，如果匹配不上则说明上传的文件不合法。服务端检测MIME类型的代码如下：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (($_FILES[<span class="string">'upload_file'</span>][<span class="string">'type'</span>] == <span class="string">'image/jpeg'</span>) || ($_FILES[<span class="string">'upload_file'</span>][<span class="string">'type'</span>] == <span class="string">'image/png'</span>) || ($_FILES[<span class="string">'upload_file'</span>][<span class="string">'type'</span>] == <span class="string">'image/gif'</span>))&#123;</span><br><span class="line"></span><br><span class="line"> ...<span class="comment">//判断过后对文件处理的进一步操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>绕过方法：</p>
 <p>因为服务端检测的是文件的MIME类型，而对这个MIME类型的的值的获取是通过HTTP请求字段里的Content-Type字段 ，所以绕过的方法就是通过修改Content-Type的值，比如修改为image/jpeg；image/png；image/gif等等允许上传类型对应的MIME值</p>
-<p><img src="/2018/10/31/ctf-web/./ctf-web/2.png" alt="bp修改请求头"></p>
+<p><img src="/2018/10/31/ctf-web/2.png" alt="bp修改请求头"></p>
 <h4 id="0x03-黑名单绕过"><a href="#0x03-黑名单绕过" class="headerlink" title="0x03:黑名单绕过"></a>0x03:黑名单绕过</h4><p>检测原理</p>
 <p>文件类型根据黑名单来检测的原理就是：服务器程序根据一份文件后缀名的名单来判断是否允许当前文件上传到服务器，只要上传的文件的类型能够和这个黑名单里面的类型匹配，那么就禁止该文件上传</p>
-<p><img src="/2018/10/31/ctf-web/./ctf-web/3.png" alt="提示代码"></p>
+<p><img src="/2018/10/31/ctf-web/3.png" alt="提示代码"></p>
 <p>绕过方法：</p>
 <p>黑名单的安全性其实还没白名单的安全性高，至少攻击它的方式比白名单多多了<br>一般有个专门的 blacklist 文件，里面会包含常见的危险脚本文件 例如 fckeditor 2.4.3 或之前版本的黑名单</p>
-<p> <img src="/2018/10/31/ctf-web/./ctf-web/6.jpg" alt="img"></p>
+<p> <img src="/2018/10/31/ctf-web/6.jpg" alt="img"></p>
 <p><strong>1. 找黑名单扩展名的漏网之鱼</strong> - 比如上面就漏掉了asa和cer之类</p>
 <p><strong>2. 可能存在大小写绕过漏洞</strong> - 比如 aSp 和 pHp 之类</p>
 <p><strong>3. 特别文件名构造</strong> -  比如发送的http包里把文件名改成 help.asp. 或 help.asp_(下划线为空格)，这种命名方式在 windows 系统里是不被允许的，所以需要在 burp 之类里进行修改，然 后绕过验证后，会被 windows 系统自动去掉后面的点和空格。</p>
@@ -190,9 +190,9 @@
 <p><strong>7. 双扩展名解析绕过攻击(1)</strong> -  基于 web 服务的解析逻辑 比如在 Apache manual 中有这样一段描述<br>“Files can have more than one extension, and the order of the extensions is normally irrelevant. For  example, if the file welcome.html.fr maps onto content type text/html and language French then the  file  welcome.fr.html  will  map  onto exactly  the  same  information.  If more  than one extension is given which maps onto the same type of meta-information, then the one to the right will  be  used,  except for languages  and content  encodings.  For example, if  .gif  maps to the MIME-type image/gif and .html maps to the MIME-type text/html, then the file welcome.gif.html will be associated with the MIME-type text/html.”</p>
 <p>如果上传一个文件名为 help.asp.123<br>首先扩展名123并没有在扩展名 blacklist 里，然后扩展名 123 也没在 Apache 可解析扩展名<br>list 里，这个时候它会向前搜寻下一个可解析扩展名，或搜寻到.php，最后会以 php 执行</p>
 <p><strong>8. 双扩展名解析绕过攻击(2)</strong> -  基于web服务的解析方式 如果在Apache的 conf 里有这样一行配置<br>AddHandler php5-script .php<br>这时只要文件名里包含.php<br>即使文件名是 test2.php.jpg 也会以 php 来执行</p>
-<p><img src="/2018/10/31/ctf-web/./ctf-web/4.jpg" alt="演示"></p>
+<p><img src="/2018/10/31/ctf-web/4.jpg" alt="演示"></p>
 <p><strong>9. 危险解析绕过攻击</strong> - 基于 web 服务的解析方式 如果在Apache的conf里有这样一行配置<br>AddType application/x-httpd-php .jpg<br>即使扩展名是 jpg，一样能以 php 方式执行</p>
-<p><img src="/2018/10/31/ctf-web/./ctf-web/5.jpg" alt="演示"></p>
+<p><img src="/2018/10/31/ctf-web/5.jpg" alt="演示"></p>
 <p><strong>白名单检测</strong></p>
 <p>白名单相对来说比黑名单安全一些，但也不见得就绝对安全了</p>
 <p><strong>1. 特别文件名构造</strong><br><strong>2. IIS或nginx文件名解析漏洞</strong><br><strong>3. 0x00 截断绕过</strong> </p>
