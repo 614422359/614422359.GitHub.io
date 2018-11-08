@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="CTF中的PHP反序列化的简单讲解
+ctf中web题目中代码审计一类的题型总会出现对于php反序列化的应用基本都是围绕着serialize()，unserialize()这两个函数。从你找到网页源代码的时候通过对php代码的了解，看到了上面两个函数，基本就是反序列化，一般是通过get传参从而达到目的。">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Kirito">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="PHP反序列化详解">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Kirito">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>PHP反序列化详解 - Kirito</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about.html">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact.html">
+                    Contact
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/11/08/web-2/">
+                PHP反序列化详解
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-11-08</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="CTF中的PHP反序列化的简单讲解"><a href="#CTF中的PHP反序列化的简单讲解" class="headerlink" title="CTF中的PHP反序列化的简单讲解"></a>CTF中的PHP反序列化的简单讲解</h1><hr>
+<p>ctf中web题目中代码审计一类的题型总会出现对于php反序列化的应用基本都是围绕着serialize()，unserialize()这两个函数。从你找到网页源代码的时候通过对php代码的了解，看到了上面两个函数，基本就是反序列化，一般是通过get传参从而达到目的。</p>
+<a id="more"></a>
+<h2 id="0×02什么是反序列化"><a href="#0×02什么是反序列化" class="headerlink" title="0×02什么是反序列化"></a>0×02什么是反序列化</h2><p>在我们讲PHP反序列化的时候，基本都是围绕着serialize()，unserialize()这两个函数。那么什么是序列化呢，序列化说通俗点就是把一个对象变成可以传输的字符串。举个例子，不知道大家知不知道json格式，这就是一种序列化，有可能就是通过array序列化而来的。而反序列化就是把那串可以传输的字符串再变回对象。</p>
+<p>直接上例子便于理解：</p>
+<p>我们先讲一讲比较简单的序列化，我们就用序列化json来举例子吧。虽然序列化Json和我们讲PHP反序列化的漏洞没有什么关系。但是在理解序列化这个概念和之后的内容会有所帮助</p>
+<blockquote>
+<p>json_encode()</p>
+<p>json_decode()</p>
+</blockquote>
+<p>这两个函数，一眼就能看出来是做什么用的吧，直接上例子：</p>
+<p><a href="https://image.3001.net/images/20180408/15231577065366.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20180408/15231577065366.png!small" alt="img"></a></p>
+<p>这边有一个book的数组</p>
+<p>‘book1′=&gt;’Harry Potter’,</p>
+<p>‘book2′=&gt;’MR.Bean’,</p>
+<p>‘Book3′=&gt;’Python Cookbook’,</p>
+<p>‘Book4′=&gt;’History’</p>
+<p>如果我们想传输这个数组怎么办呢，我们就可以请json_encode()这个函数帮助我们将这个数组序列化成一串字符串</p>
+<p><a href="https://image.3001.net/images/20180408/15231577454017.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20180408/15231577454017.png!small" alt="img"></a></p>
+<p>所以在这里，我们将数组序列化成json格式的字串的目的就是为了方便传输。我们可以看见，这里json格式来保存数据主要是使用键值对的形式。</p>
+<p>好啦，接下来我们要开始深入一步，来讲讲如何把一个对象序列化成一串字符串。</p>
+<p>假设，我们写了一个class，这个class里面存有一些变量。当这个class被实例化了之后，在使用过程中里面的一些变量值发生了改变。以后在某些时候还会用到这个变量，如果我们让这个class一直不销毁，等着下一次要用它的时候再一次被调用的话，浪费系统资源。当我们写一个小型的项目可能没有太大的影响，但是随着项目的壮大，一些小问题被放大了之后就会产生很多麻烦。这个时候PHP就和我们说，你可以把这个对象序列化了，存成一个字符串，当你要用的时候再放他出来就好了。</p>
+<p>那么，怎么才能把一个对象序列化呢？ 来，小二，上个例子：</p>
+<p><a href="https://image.3001.net/images/20180408/15231577584563.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20180408/15231577584563.png!small" alt="img"></a></p>
+<p>这里，我们先创了个DemoClass，里面存了点信息，后来我们new了一个实例$example的时候，将这个class里的一些信息给改变了。</p>
+<p>如果我们之后还要用到这个实例怎么办呢，我们就先将他序列化存起来，到时候用的时候再放出来就好啦。</p>
+<p>是不是很简单，只要用serialize()这个函数就行了</p>
+<p><a href="https://image.3001.net/images/20180408/15231577796191.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20180408/15231577796191.png!small" alt="img"></a></p>
+<p>这个时候，我们发现这次序列化出来的格式，和我们上一个序列化json的格式有点不同呢，解释一波：</p>
+<p><a href="https://image.3001.net/images/20180408/15231577918257.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20180408/15231577918257.png!small" alt="img"></a></p>
+<p>然后如果反序列化回来的话</p>
+<p><a href="https://image.3001.net/images/20180408/15231578009188.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20180408/15231578009188.png!small" alt="img"></a></p>
+<h2 id="0×03-为什么会产生这个漏洞"><a href="#0×03-为什么会产生这个漏洞" class="headerlink" title="0×03 为什么会产生这个漏洞?"></a>0×03 为什么会产生这个漏洞?</h2><p>那么，问题来了，这么序列化一下然后反序列化，为什么就能产生漏洞了呢？</p>
+<p>这个时候，我们就要了解一下PHP里面的魔术方法了，魔法函数一般是以__开头，通常会因为某些条件而触发不用我们手动调用：</p>
+<p>在研究反序列化漏洞的时候，碰见这几个魔法函数就要仔细研究研究了：</p>
+<blockquote>
+<p>__construct()当一个对象创建时被调用</p>
+<p>__destruct()当一个对象销毁时被调用</p>
+<p>__toString()当一个对象被当作一个字符串使用</p>
+<p>__sleep() 在对象在被序列化之前运行</p>
+<p>__wakeup将在序列化之后立即被调用</p>
+</blockquote>
+<p>这些就是我们要关注的几个魔术方法了，如果服务器能够接收我们反序列化过的字符串、并且未经过滤的把其中的变量直接放进这些魔术方法里面的话，就容易造成很严重的漏洞了。</p>
+<p>举个别人的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class A&#123;</span><br><span class="line">    var $test = &quot;demo&quot;;</span><br><span class="line">    function __destruct()&#123;</span><br><span class="line">            echo $this-&gt;test;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a = $_GET[&apos;test&apos;];</span><br><span class="line">$a_unser = unserialize($a);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>这里我们只要构造payload：</p>
+<p><a href="http://127.0.0.1/test.php?test=O:1:" target="_blank" rel="noopener">http://127.0.0.1/test.php?test=O:1:”A”:1:{s:4:”test”;s:5:”hello”;}</a></p>
+<p>就能控制echo出的变量，比如你能拿这个来进行反射型xss。。。（听你扯了半天你就给我看这个）</p>
+<h2 id="0×04-实例分析"><a href="#0×04-实例分析" class="headerlink" title="0×04 实例分析"></a>0×04 实例分析</h2><p>这里实战一题比较简单的<a href="http://web.jarvisoj.com:32768/index.php" target="_blank" rel="noopener">ctf题目</a>吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">    require_once(&apos;shield.php&apos;);</span><br><span class="line">    $x = new Shield();</span><br><span class="line">    isset($_GET[&apos;class&apos;]) &amp;&amp; $g = $_GET[&apos;class&apos;];</span><br><span class="line">    if (!empty($g)) &#123;</span><br><span class="line">        $x = unserialize($g);</span><br><span class="line">    &#125;</span><br><span class="line">    echo $x-&gt;readfile();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看见 先是包含了shield.php 然后从中new了个新的实例出来 最后接收用户的反序列化 输出readfile()方法</p>
+<p>跟进：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    //flag is in pctf.php</span><br><span class="line">    class Shield &#123;</span><br><span class="line">        public $file;</span><br><span class="line">        function __construct($filename = &apos;&apos;) &#123;</span><br><span class="line">            $this -&gt; file = $filename;</span><br><span class="line">        &#125;</span><br><span class="line">        function readfile() &#123;</span><br><span class="line">            if (!empty($this-&gt;file) &amp;&amp; stripos($this-&gt;file,&apos;..&apos;)===FALSE  </span><br><span class="line">            &amp;&amp; stripos($this-&gt;file,&apos;/&apos;)===FALSE &amp;&amp; stripos($this-&gt;file,&apos;\\&apos;)==FALSE) &#123;</span><br><span class="line">                return @file_get_contents($this-&gt;file);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>这里我们可以看见只要操控$file这个参数为pctf.php就可以了，这里construct函数在实例被创建的时候(也就是new Shield()的时候)执行，所以不会影响我们对$file的操作</p>
+<p>直接构造序列化对象传过去 O:6:”Shield”:1:{s:4:”file”;s:8:”pctf.php”;} 就行了</p>
+
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This dust was developed by <a href="https://github.com/klugjo">Jonathan Klughertz</a>. The source code is available on Github. Create Websites. Make Magic.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/11/08/web-2/">PHP反序列化详解</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/10/31/ctf-web/">ctf_web</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/10/22/LOIC/">LOIC</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/10/21/The-first/">The-first</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klugjo/hexo-theme-alpha-theme">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://twitter.com/?lang=en">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://www.facebook.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://www.instagram.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-instagram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://dribbble.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-dribbble"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://plus.google.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-google-plus"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://www.behance.net/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-behance"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://500px.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-500px"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:test@example.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Untitled. All right reserved | Design & Hexo <a href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
