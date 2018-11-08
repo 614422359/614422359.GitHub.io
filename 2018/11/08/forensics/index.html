@@ -10,6 +10,12 @@
 
     <!--Description-->
     
+        <meta name="description" content="内存取证之Volatility的使用
+Volatility 简介：
+Volatility是一款开源的，基于Python开发的内存取证工具集，可以分析内存中的各种数据。Volatility支持对32位或64位Wnidows、Linux、Mac、Android操作系统的RAM数据进行提取与分析。
+
+vo">
+    
 
     <!--Author-->
     
@@ -18,7 +24,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Kirito">
+        <meta property="og:title" content="forensics">
     
 
     <!--Open Graph Description-->
@@ -29,7 +35,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website">
+        <meta property="og:type" content="article">
     
 
     <!--Page Cover-->
@@ -40,7 +46,7 @@
 
     <!-- Title -->
     
-    <title>Archives: 2018/10 - Kirito</title>
+    <title>forensics - Kirito</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -127,9 +133,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -137,61 +141,109 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">2018/10</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2018/11/08/forensics/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        forensics
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/11/08/forensics/">
+                forensics
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-11-08</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="内存取证之Volatility的使用"><a href="#内存取证之Volatility的使用" class="headerlink" title="内存取证之Volatility的使用"></a>内存取证之Volatility的使用</h1><hr>
+<p><strong>Volatility 简介：</strong></p>
+<p>Volatility是一款开源的，基于Python开发的内存取证工具集，可以分析内存中的各种数据。Volatility支持对32位或64位Wnidows、Linux、Mac、Android操作系统的RAM数据进行提取与分析。</p>
+<p><a href="https://image.3001.net/images/20171031/15094354857406.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094354857406.png!small" alt="简介.png"></a></p>
+<p><strong>volatility 使用：</strong></p>
+<p>volatility -f &lt;文件名&gt; –profile=&lt;配置文件&gt; &lt;插件&gt; [插件参数] </p>
+<p>获取–profile的参数 </p>
+<p>使用imageinfo插件来猜测dump文件的profile值：WinXPSP2x86 </p>
+<p>root@kali:~/quzhen# volatility -f mem.vmem imageinfo</p>
+<p><a href="https://image.3001.net/images/20171031/15094356956873.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094356956873.png!small" alt="info.png"></a></p>
+<p>root@kali:~/quzhen# volatility -f mem.vmem –profile=WinXPSP2x86</p>
+<p><a href="https://image.3001.net/images/20171031/15094359779976.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094359779976.png!small" alt="86.png"></a></p>
+<p>shell的命令： </p>
+<p>dt(“内核关键数据结构名称”) </p>
+<p>如： </p>
+<p>dt(“_PEB”)</p>
+<p><a href="https://image.3001.net/images/20171031/15094360588545.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094360588545.png!small" alt="dt.png"></a></p>
+<p>列举进程：</p>
+<p>root@kali:~/quzhen# volatility -f mem.vmem –profile=WinXPSP2x86 pslist</p>
+<p><a href="https://image.3001.net/images/20171031/15094361332757.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094361332757.png!small" alt="jincheng.png"></a></p>
+<p>列举缓存在内存的注册表 ：</p>
+<p>olatility -f mem.vmem –profile=WinXPSP2x86 hivelist</p>
+<p><a href="https://image.3001.net/images/20171031/15094366303553.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094366303553.png!small" alt="list.png"></a></p>
+<p> hivedump 打印出注册表中的数据 ：</p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 hivedump -o 注册表的 virtual 地址</p>
+<p><a href="https://image.3001.net/images/20171031/15094367073870.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094367073870.png!small" alt="dizhi.png"></a></p>
+<p>获取SAM表中的用户 ：</p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 printkey -K “SAM\Domains\Account\Users\Names” </p>
+<p>可以看到有4个用户</p>
+<p><a href="https://image.3001.net/images/20171031/15094368389375.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094368389375.png!small" alt="yonghu.png"></a></p>
+<p>获取最后登录系统的账户 ：</p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 printkey -K “SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon” </p>
+<p>提取出内存中记录的 当时正在运行的程序有哪些，运行过多少次，最后一次运行的时间等信息 </p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 userassist</p>
+<p><a href="https://image.3001.net/images/20171031/15094368965554.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094368965554.png!small" alt="sist.png"></a></p>
+<p> 将内存中的某个进程数据以 dmp 的格式保存出来 。</p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 -p [PID] -D [dump 出的文件保存的目录]</p>
+<p><a href="https://image.3001.net/images/20171031/15094369522886.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094369522886.png!small" alt="mulu.png"></a></p>
+<p>二进制编辑器 hexeditor 将以上保存的 dmp 文件打开，并进行调查取证的工作 。</p>
+<p>hexeditor 1736.dmp</p>
+<p><a href="https://image.3001.net/images/20171031/15094370289727.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094370289727.png!small" alt="二进制.png"></a></p>
+<p> 你还可以使用 strings 这个工具将它的字符串打印出来。 </p>
+<p>例：</p>
+<p>strings 1736.dmp &gt; 1736.txt </p>
+<p>strings 1608.dmp &gt; 1736.txt | grep shellcode </p>
+<p>提取内存中保留的 cmd 命令使用情况 。</p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 cmdscan</p>
+<p><a href="https://image.3001.net/images/20171031/15094371069022.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094371069022.png!small" alt="can.png"></a></p>
+<p>获取到当时的网络连接情况 。</p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 netscan</p>
+<p><a href="https://image.3001.net/images/20171031/15094371443574.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094371443574.png!small" alt="scan.png"></a></p>
+<p>获取 IE 浏览器的使用情况。 </p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 iehistory </p>
+<p>获取内存中的系统密码，我们可以使用 hashdump 将它提取出来 。</p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 hashdump -y （注册表 system 的 virtual 地址 ）-s （SAM 的 virtual 地址）</p>
+<p> <a href="https://image.3001.net/images/20171031/15094372685195.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171031/15094372685195.png!small" alt="地址.png"></a></p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 hashdump -y 0xe1035b60 -s 0xe16aab60 </p>
+<p>最大程度上将内存中的信息提取出来，那么你可以使用 timeliner 这个插件。它会从多个位置来收集系统的活动信息 </p>
+<p>volatility -f mem.vmem –profile=WinXPSP2x86 timeliner</p>
+
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2018/10/22/LOIC/">
-        <span class="archive-date">
-            Oct 2018
-        </span>
-        LOIC
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/10/31/ctf-web/">
-        <span class="archive-date">
-            Oct 2018
-        </span>
-        ctf_web
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/11/08/web-2/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        PHP反序列化详解
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/10/21/The-first/">
-        <span class="archive-date">
-            Oct 2018
-        </span>
-        The-first
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 
