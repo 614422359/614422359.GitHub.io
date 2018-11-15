@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="web代码审计中常见的变量覆盖问题
+ctf题目之中总有很多的关于变量覆盖问题，接下来就稍微总结以下变量覆盖中常见的类型；">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Kirito">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="web-3">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Kirito">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>web-3 - Kirito</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about.html">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact.html">
+                    Contact
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/11/15/web-3/">
+                web-3
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-11-15</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="web代码审计中常见的变量覆盖问题"><a href="#web代码审计中常见的变量覆盖问题" class="headerlink" title="web代码审计中常见的变量覆盖问题"></a>web代码审计中常见的变量覆盖问题</h1><hr>
+<p>ctf题目之中总有很多的关于变量覆盖问题，接下来就稍微总结以下变量覆盖中常见的类型；</p>
+<a id="more"></a>
+<p><strong>0×00 背景</strong></p>
+<p>近期在研究学习变量覆盖漏洞的问题，于是就把之前学习的和近期看到的CTF题目中有关变量覆盖的题目结合下进一步研究。 </p>
+<p>通常将可以用自定义的参数值替换原有变量值的情况称为变量覆盖漏洞。经常导致变量覆盖漏洞场景有：$$使用不当，extract()函数使用不当，parse_str()函数使用不当，import_request_variables()使用不当，开启了全局变量注册等。 </p>
+<p>本篇收集了几个CTF中的题目作为例子，对$$，extract()，parse_str()的问题进行总结。</p>
+<p><strong>0×01 $$导致的变量覆盖问题</strong></p>
+<p>$$ 导致的变量覆盖问题在CTF代码审计题目中经常在foreach中出现，如以下的示例代码，使用foreach来遍历数组中的值，然后再将获取到的数组键名作为变量，数组中的键值作为变量的值。因此就产生了变量覆盖漏洞。请求?name=test 会将$name的值覆盖，变为test。</p>
+<blockquote>
+<p>1.&lt;?php</p>
+<p>2.//?name=test</p>
+<p>3.//output:string(4) “name” string(4) “test” string(4) “test” test</p>
+<p>4.$name=’thinking’;</p>
+<p>5.foreach ($_GET as $key =&gt; $value)</p>
+<p>\6.    $$key = $value;</p>
+<p>\7.    var_dump($key);</p>
+<p>\8.    var_dump($value);</p>
+<p>\9.    var_dump($$key);</p>
+<p>10.echo $name;</p>
+<p>11.?&gt;</p>
+</blockquote>
+<p><strong>CTF中$$导致的变量覆盖问题的例题1：</strong> </p>
+<p><strong>题目源码：</strong></p>
+<blockquote>
+<p>1.&lt;?php</p>
+<p>2.include “flag.php”;</p>
+<p>3.$_403 = “Access Denied”;</p>
+<p>4.$_200 = “Welcome Admin”;</p>
+<p>5.if ($_SERVER[“REQUEST_METHOD”] != “POST”)</p>
+<p>\6.    die(“BugsBunnyCTF is here :p…”);</p>
+<p>7.if ( !isset($_POST[“flag”]) )</p>
+<p>\8.    die($_403);</p>
+<p>9.foreach ($_GET as $key =&gt; $value)</p>
+<p>\10.    $$key = $$value;</p>
+<p>11.foreach ($_POST as $key =&gt; $value)</p>
+<p>\12.    $$key = $value;</p>
+<p>13.if ( $_POST[“flag”] !== $flag )</p>
+<p>\14.    die($_403);</p>
+<p>15.echo “This is your flag : “. $flag . “\n”;</p>
+<p>16.die($_200);</p>
+<p>17.?&gt;</p>
+</blockquote>
+<p><strong>题目分析：</strong> </p>
+<p>源码包含了<strong>flag.php</strong>文件，并且需要满足3个if里的条件才能获取flag，题目中使用了两个<strong>foreach</strong>并且也使用了<strong>$$.</strong>两个<strong>foreach</strong>中对 <strong>$$key</strong>的处理是不一样的，满足条件后会将<strong>$flag</strong>里面的值打印出来，所以<strong>$flag</strong>是在<strong>flag.php</strong>文件文件中的。 </p>
+<p>但是由于第7，11-14行间的代码会将$flag的值给覆盖掉了，所以需要先将$flag的值赋给<strong>$_200或$_403</strong>变量，然后利用<strong>die($_200)或 die($_403)</strong>将flag打印出来。</p>
+<p>解题方法： </p>
+<p>由于第7，11-14行间的代码会将<strong>$flag</strong>的值给覆盖掉，所以只能利用第一个foreach先将<strong>$flag</strong>的值赋给<strong>$_200</strong>，然后利用<strong>die($_200)</strong>将原本的flag值打印出来。</p>
+<p>最终PAYLOAD： </p>
+<p>本地复现，所以flag与原题不一样</p>
+<p>GET DATA：?_200=flag </p>
+<p>POST DATA：flag=aaaaaaaaaaaaaaaaaaaaa</p>
+<p> <a href="https://image.3001.net/images/20171016/1508135334244.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171016/1508135334244.png!small" alt="01.png"></a></p>
+<p><strong>0×02 extract()函数导致的变量覆盖问题</strong></p>
+<p><strong>extract()</strong> 该函数使用数组键名作为变量名，使用数组键值作为变量值。针对数组中的每个元素，将在当前符号表中创建对应的一个变量。 </p>
+<p><strong>extract()</strong>的用法参考：<a href="http://www.runoob.com/php/func-array-extract.html" target="_blank" rel="noopener">http://www.runoob.com/php/func-array-extract.html</a></p>
+<p>语法： <strong>extract(array,extract_rules,prefix)</strong></p>
+<p><a href="https://image.3001.net/images/20171016/15081353927653.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171016/15081353927653.png!small" alt="02.png"></a> </p>
+<p><strong>CTF中extract()导致的变量覆盖问题的例题1:</strong> </p>
+<p><strong>题目源码：</strong></p>
+<blockquote>
+<p>1.&lt;?php</p>
+<p>2.$flag = ‘xxx’;</p>
+<p>3.extract($_GET);</p>
+<p>4.if (isset($gift)) {</p>
+<p>\5.    $content = trim(file_get_contents($flag));</p>
+<p>\6.    if ($gift == $content) {</p>
+<p>\7.        echo ‘hctf{…}’;</p>
+<p>\8.    } else {</p>
+<p>\9.        echo ‘Oh..’;</p>
+<p>\10.    }</p>
+<p>11.} </p>
+<p>12.?&gt;</p>
+</blockquote>
+<p><strong>题目分析：</strong> </p>
+<p>题目使用了<strong>extract($_GET)</strong>接收了GET请求中的数据，并将键名和键值转换为变量名和变量的值，然后再进行两个if 的条件判断，所以可以使用GET提交参数和值，利用<strong>extract()</strong>对变量进行覆盖，从而满足各个条件。</p>
+<p><strong>解题方法：</strong> </p>
+<p>GET请求 ?flag=&amp;gift=，extract()会将$flag和$gift的值覆盖了，将变量的值设置为空或者不存在的文件就满足$gift == $content。</p>
+<p>最终PAYLOAD： </p>
+<p>GET DATA： ?flag=&amp;gift=</p>
+<p><strong>CTF中extract()导致的变量覆盖问题的例题2:</strong> </p>
+<p><strong>题目源码：</strong></p>
+<blockquote>
+<p>1.&lt;?php if ($_SERVER[“REQUEST_METHOD”] == “POST”) { ?&gt;</p>
+<p>\2.      &lt;?php</p>
+<p>\3.        extract($_POST);</p>
+<p>\4.        if ($pass == $thepassword_123) { ?&gt;</p>
+<p>\5.            <div class="”alert" alert-success”=""></div></p>
+<p>\6.                <code>&lt;?php echo $theflag; ?&gt;</code></p>
+<p>\7.            </p>
+<p>\8.        &lt;?php } ?&gt;</p>
+<p>\9.    &lt;?php } ?&gt;</p>
+</blockquote>
+<p><strong>题目分析：</strong> </p>
+<p>题目要求使用POST提交数据，<strong>extract($_POST)</strong>会将POST的数据中的键名和键值转换为相应的变量名和变量值，利用这个覆盖<strong>$pass</strong>和<strong>$thepassword_123</strong>变量的值，从而满足<strong>$pass == $thepassword_123</strong>这个条件。</p>
+<p><strong>解题方法：</strong> </p>
+<p>使用POST请求提交<strong>pass=&amp;thepassword_123=</strong>, 然后<strong>extract()</strong>会将接收到的数据将<strong>$pass</strong>和<strong>$thepassword_123</strong>变量的值覆盖为空，便满足条件了。</p>
+<p>最终PAYLOAD： </p>
+<p>POST DATA：pass=&amp;thepassword_123=</p>
+<p><strong>0×03 parse_str函数导致的变量覆盖问题</strong></p>
+<p>parse_str() 函数用于把查询字符串解析到变量中，如果没有array 参数，则由该函数设置的变量将覆盖已存在的同名变量。 </p>
+<p>语法：parse_str(string,array)</p>
+<p><a href="https://image.3001.net/images/20171016/15081361587440.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20171016/15081361587440.png!small" alt="003.png"></a></p>
+<p><strong>parse_str()</strong> 用法参考：<a href="http://php.net/parse_str" target="_blank" rel="noopener">http://php.net/parse_str</a></p>
+<p><strong>CTF中parse_str()导致的变量覆盖问题的例题1:</strong> </p>
+<p><strong>题目源码：</strong></p>
+<blockquote>
+<p>1.&lt;?php</p>
+<p>2.error_reporting(0);</p>
+<p>3.if (empty($_GET[‘id’])) {</p>
+<p>\4.    show_source(<strong>FILE</strong>);</p>
+<p>\5.    die();</p>
+<p>6.} else {</p>
+<p>\7.    include (‘flag.php’);</p>
+<p>\8.    $a = “<a href="http://www.OPENCTF.com”" target="_blank" rel="noopener">www.OPENCTF.com”</a>;</p>
+<p>\9.    $id = $_GET[‘id’];</p>
+<p>\10.    @parse_str($id);</p>
+<p>\11.    if ($a[0] != ‘QNKCDZO’ &amp;&amp; md5($a[0]) == md5(‘QNKCDZO’)) {</p>
+<p>\12.        echo $flag;</p>
+<p>\13.    } else {</p>
+<p>\14.        exit(‘其实很简单其实并不难！’);</p>
+<p>\15.    }</p>
+<p>16.}</p>
+<p>17.?&gt; </p>
+</blockquote>
+<p><strong>题目分析：</strong> </p>
+<p>首先要求使用GET提交id参数，然后<strong>parse_str($id)对id</strong>参数的数据进行处理，再使用判断<strong>$a[0] != ‘QNKCDZO’ &amp;&amp; md5($a[0]) == md5(‘QNKCDZO’)</strong>的结果是否为真，为真就返回flag，<strong>md5(‘QNKCDZO’)</strong>的结果是<strong>0e830400451993494058024219903391</strong>由于此次要满足<strong>$a[0] != ‘QNKCDZO’ &amp;&amp; md5($a[0]) == md5(‘QNKCDZO’)</strong>所以要利用php弱语言特性，0e123会被当做科学计数法，0 * 10 x 123。所以需要找到一个字符串md5后的结果是0e开头后面都是数字的，如，240610708，s878926199a </p>
+<p>PHP处理0e开头md5哈希字符串缺陷/bug 参考：<a href="http://www.cnblogs.com/Primzahl/p/6018158.html" target="_blank" rel="noopener">http://www.cnblogs.com/Primzahl/p/6018158.html</a></p>
+<p><strong>解题方法：</strong> </p>
+<p>使用GET请求id=a[0]=240610708，这样会将a[0]的值覆盖为<strong>240610708</strong>，然后经过md5后得到<strong>0e462097431906509019562988736854与md5(‘QNKCDZO’)</strong>的结果<strong>0e830400451993494058024219903391</strong>比较都是0 所以相等，满足条件，得打flag。</p>
+<p><strong>最终PAYLOAD：</strong> </p>
+<p><strong>GET DATA:</strong> </p>
+<p><strong>?id=a[0]=s878926199a</strong> </p>
+<p><strong>or</strong> </p>
+<p><strong>?id=a[0]=240610708</strong></p>
+<p><strong>0×04 小总结</strong></p>
+<p>变量覆盖漏洞在PHP代码审计中会以比较隐晦的方式存在，所以需要更加仔细的阅读源码找出漏洞的点，在CTF里面经常是以比较直接方式展示，所以可以先通过学习CTF各种变量覆盖的题目，然后掌握后再去审计cms，这样可以更加通透的理解掌握和挖掘变量覆盖漏洞。</p>
+
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    人生美好，不负当下
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/11/15/web-3/">web-3</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/11/11/web-1/">web_1</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/11/08/forensics/">forensics</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/11/08/web-2/">PHP反序列化详解</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a href="https://github.com/klugjo/hexo-theme-alpha-dust">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://twitter.com/?lang=en">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://www.facebook.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://www.instagram.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-instagram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://dribbble.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-dribbble"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://plus.google.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-google-plus"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://www.behance.net/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-behance"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="https://500px.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-500px"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:test@example.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Untitled. All right reserved | Design & Hexo <a href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
