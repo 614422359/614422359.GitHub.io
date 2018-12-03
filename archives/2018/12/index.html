@@ -10,8 +10,6 @@
 
     <!--Description-->
     
-        <meta name="description" content="重启nginx时出现报错nginx: [error] open() “/usr/local/var/run/nginx.pid” failed (2: No such file or directory)">
-    
 
     <!--Author-->
     
@@ -20,7 +18,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="nginx_1">
+        <meta property="og:title" content="Kirito">
     
 
     <!--Open Graph Description-->
@@ -31,7 +29,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="article">
+        <meta property="og:type" content="website">
     
 
     <!--Page Cover-->
@@ -42,7 +40,7 @@
 
     <!-- Title -->
     
-    <title>nginx_1 - Kirito</title>
+    <title>Archives: 2018/12 - Kirito</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -129,7 +127,9 @@
 <div class="container">
 
     <!-- Main Content -->
-    <div class="row">
+    
+
+<div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -137,59 +137,106 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
+            <h1 id="main-title" class="title">2018/12</h1>
+        
     </div>
 </header>
 
-        <section class="main">
+        <section class="main archive-container">
             
-<div class="post">
-
-    <div class="post-header">
-        <h1 class="title">
-            <a href="/2018/11/29/nginx-1/">
-                nginx_1
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-11-29</span>
-            
-            
-            
-        </div>
-    </div>
-
-    <div class="content">
-
-        <!-- Gallery -->
-        
-
-        <!-- Post Content -->
-        <h2 id="重启nginx时出现报错"><a href="#重启nginx时出现报错" class="headerlink" title="重启nginx时出现报错"></a>重启nginx时出现报错</h2><p>nginx: [error] open() “/usr/local/var/run/nginx.pid” failed (2: No such file or directory)</p>
-<a id="more"></a>
-<p>解决办法：<br>找到nginx.conf的文件夹目录，运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -c /usr/local/etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20181129202910962.png" alt="示例"><br>然后运行命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20181129203024741.png" alt=""><br>如果找不到目标文件可以使用find命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name nginx.conf</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20181129203256329.png" alt="在这里插入图片描述"></p>
-
-    </div>
-
-    
-
-    
-
-    <!-- Comments -->
-    
-
+                <div class="archive-post">
+    <a href="/2018/12/03/KMS-1/">
+        <span class="archive-date">
+            Dec 2018
+        </span>
+        KMS激活office
+    </a>
 </div>
+            
+                <div class="archive-post">
+    <a href="/2018/10/22/LOIC/">
+        <span class="archive-date">
+            Oct 2018
+        </span>
+        LOIC
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/10/21/The-first/">
+        <span class="archive-date">
+            Oct 2018
+        </span>
+        The-first
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/10/31/ctf-web/">
+        <span class="archive-date">
+            Oct 2018
+        </span>
+        ctf_web
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/11/08/forensics/">
+        <span class="archive-date">
+            Nov 2018
+        </span>
+        forensics
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/11/29/nginx-1/">
+        <span class="archive-date">
+            Nov 2018
+        </span>
+        nginx_1
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/11/11/web-1/">
+        <span class="archive-date">
+            Nov 2018
+        </span>
+        文件包含漏洞利用
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/11/08/web-2/">
+        <span class="archive-date">
+            Nov 2018
+        </span>
+        PHP反序列化详解
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/11/15/web-3/">
+        <span class="archive-date">
+            Nov 2018
+        </span>
+        变量覆盖问题
+    </a>
+</div>
+            
+                <div class="archive-post">
+    <a href="/2018/11/22/wireshark/">
+        <span class="archive-date">
+            Nov 2018
+        </span>
+        wireshark
+    </a>
+</div>
+            
         </section>
-
     </div>
 </div>
-
 
 </div>
 
