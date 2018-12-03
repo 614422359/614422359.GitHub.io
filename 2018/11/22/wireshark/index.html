@@ -10,7 +10,12 @@
 
     <!--Description-->
     
-        <meta name="description" content="入门级Dos攻击工具LOIC的使用LOIC被誉为低轨道粒子炮是一款专著于web应用程序的Dos/DDOS攻击工具，它可以用TCP数据包、UDP数据包、HTTP请求于对目标网站进行DDOS/DOS测试，不怀好意的人可能利用LOIC构建僵尸网络。如果进行ddos攻击的话很有可能导致较弱的服务器的网站直接无法访问503错误，因为服务器资源被大量占用。">
+        <meta name="description" content="wireshark的基本介绍和握手包的分析
+wireshark介绍
+wireshark的官方下载网站： http://www.wireshark.org/
+wireshark是非常流行的网络封包分析软件，功能十分强大。可以截取各种网络封包，显示网络封包的详细信息。
+wireshark是开源软件，可以放心使用。 可以运行在Windows和Mac OS上。
+使用wireshark的人必须了解网络协议，否则就看不懂wireshark。">
     
 
     <!--Author-->
@@ -20,7 +25,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="LOIC">
+        <meta property="og:title" content="wireshark">
     
 
     <!--Open Graph Description-->
@@ -42,7 +47,7 @@
 
     <!-- Title -->
     
-    <title>LOIC - Kirito</title>
+    <title>wireshark - Kirito</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -146,13 +151,13 @@
 
     <div class="post-header">
         <h1 class="title">
-            <a href="/2018/10/22/LOIC/">
-                LOIC
+            <a href="/2018/11/22/wireshark/">
+                wireshark
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2018-10-22</span>
+                <span class="date">2018-11-22</span>
             
             
             
@@ -165,22 +170,104 @@
         
 
         <!-- Post Content -->
-        <h1 id="入门级Dos攻击工具LOIC的使用"><a href="#入门级Dos攻击工具LOIC的使用" class="headerlink" title="入门级Dos攻击工具LOIC的使用"></a>入门级Dos攻击工具LOIC的使用</h1><p>LOIC被誉为低轨道粒子炮是一款专著于web应用程序的Dos/<a href="https://www.baidu.com/s?wd=DDOS%E6%94%BB%E5%87%BB&amp;tn=SE_PcZhidaonwhc_ngpagmjz&amp;rsv_dl=gh_pc_zhidao" target="_blank" rel="noopener">DDOS攻击</a>工具，它可以用TCP数据包、UDP数据包、<a href="https://www.baidu.com/s?wd=HTTP%E8%AF%B7%E6%B1%82&amp;tn=SE_PcZhidaonwhc_ngpagmjz&amp;rsv_dl=gh_pc_zhidao" target="_blank" rel="noopener">HTTP请求</a>于对目标网站进行DDOS/DOS测试，不怀好意的人可能利用LOIC构建僵尸网络。如果进行ddos攻击的话很有可能导致较弱的服务器的网站直接无法访问503错误，因为服务器资源被大量占用。</p>
-<a id="more"></a>
-<p>首先找到资源下载（这里我就不提供了！</p>
-<p>然后确保自己电脑开启了.NET4.0以上的服务。</p>
-<p>打开软解界面如下所示：</p>
-<p><img src="/2018/10/22/LOIC/1.jpg" alt="示例图片" title="示例图片"></p>
-<p>这里输入url点击Lock on 可以看到目标网站的ip，也可以在第二行直接输入ip，其他的分别是攻击的端口，方式（HTTP,UDP,TCP)，是否等待回应，以及线程数，还有攻击的快慢，本软件轻便简单,使用方便，调试好之后，直接右上角进行攻击，如果你觉得跑的还是慢的话可以取消掉Wait for reply.</p>
-<p>下面上几张实战照片（本次靶机是阿里云的一台云服务器，大家要尝试可以找台虚拟机开web服务测试）：</p>
-<p><img src="/2018/10/22/LOIC/2.png" alt="攻击前"></p>
-<p><img src="/2018/10/22/LOIC/3.png" alt="攻击之后"></p>
-<p>最后受害者收到了阿里云发给的强制关机的邮件：</p>
-<p><img src="/2018/10/22/LOIC/4.jpg" alt="受害者视角"></p>
-<p>ps：其实这款软件没有那么强大，除非你有很多肉鸡，不然只是大量占用了网站的带宽，关掉之后是不会影响网站的运作的。</p>
-<p>另外附加上对LOIC源码的分析：</p>
-<p><a href="http://www.freebuf.com/sectool/88356.html" target="_blank" rel="noopener">源码的分析</a></p>
-
+        <h1 id="wireshark的基本介绍和握手包的分析"><a href="#wireshark的基本介绍和握手包的分析" class="headerlink" title="wireshark的基本介绍和握手包的分析"></a>wireshark的基本介绍和握手包的分析</h1><hr>
+<p>wireshark介绍</p>
+<p>wireshark的官方下载网站： <a href="http://www.wireshark.org/" target="_blank" rel="noopener">http://www.wireshark.org/</a></p>
+<p>wireshark是非常流行的网络封包分析软件，功能十分强大。可以截取各种网络封包，显示网络封包的详细信息。</p>
+<p>wireshark是开源软件，可以放心使用。 可以运行在Windows和Mac OS上。</p>
+<p>使用wireshark的人必须了解网络协议，否则就看不懂wireshark。</p>
+ <a id="more"></a>
+<p>Wireshark不能做的</p>
+<p>为了安全考虑，wireshark只能查看封包，而不能修改封包的内容，或者发送封包。</p>
+<p>wireshark 开始抓包</p>
+<p>下面是开始界面</p>
+<p><img src="https://img-blog.csdn.net/20130709123237343?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>wireshark是捕获机器上的某一块网卡的网络包，当你的机器上有多块网卡的时候，你需要选择一个网卡，一般选择有数据传输的那个。</p>
+<p>点击Caputre-&gt;Interfaces.. 出现下面对话框，选择正确的网卡。然后点击”Start”按钮，开始抓包。</p>
+<p><img src="https://img-blog.csdn.net/20130709123409515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>Wireshark 窗口介绍</p>
+<p><img src="https://img-blog.csdn.net/20130709123604593?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>WireShark 主要分为这几个界面</p>
+<ol>
+<li><p>Display Filter(显示过滤器)，  用于过滤</p>
+</li>
+<li><p>Packet List Pane(封包列表)， 显示捕获到的封包， 有源地址和目标地址，端口号。</p>
+</li>
+<li><p>Packet Details Pane(封包详细信息), 显示封包中的字段</p>
+</li>
+<li><p>Dissector Pane(16进制数据)</p>
+</li>
+<li><p>Miscellanous(地址栏，杂项)</p>
+</li>
+</ol>
+<p>Wireshark 显示过滤</p>
+<p>使用过滤是非常重要的， 初学者使用wireshark时，将会得到大量的冗余信息，在几千甚至几万条记录中，以至于很难找到自己需要的部分。搞得晕头转向。</p>
+<p>过滤器会帮助我们在大量的数据中迅速找到我们需要的信息。</p>
+<p>过滤器有两种，</p>
+<p><code>**一种是显示过滤器，就是主界面上那个，用来在捕获的记录中找到所需要的记录**``</code></p>
+<p><code>**一种是捕获过滤器，用来过滤捕获的封包，以免捕获太多的记录。 在Capture -&gt; Capture Filters 中设置**</code></p>
+<p>过滤表达式的规则</p>
+<p>表达式规则</p>
+<ol>
+<li>协议过滤</li>
+</ol>
+<p>比如TCP，只显示TCP协议。</p>
+<ol start="2">
+<li>IP 过滤</li>
+</ol>
+<p>比如 ip.src ==192.168.1.102 显示源地址为192.168.1.102，</p>
+<p>ip.dst==192.168.1.102, 目标地址为192.168.1.102</p>
+<ol start="3">
+<li>端口过滤</li>
+</ol>
+<p>tcp.port ==80,  端口为80的</p>
+<p>tcp.srcport == 80,  只显示TCP协议的源端口为80的。</p>
+<ol start="4">
+<li>Http模式过滤</li>
+</ol>
+<p>http.request.method==”GET”,   只显示HTTP GET方法的。</p>
+<ol start="5">
+<li>逻辑运算符为 AND/ OR</li>
+</ol>
+<p>常用的过滤表达式：</p>
+<p>过滤表达式                                                                                                         用途</p>
+<p>http                                                                                                              只查看HTTP协议的记录</p>
+<p>ip.src ==192.168.1.102 or ip.dst==192.168.1.102                                  源地址或者目标地址是192.168.1.102</p>
+<h3 id="封包列表-Packet-List-Pane"><a href="#封包列表-Packet-List-Pane" class="headerlink" title="封包列表(Packet List Pane)"></a>封包列表(Packet List Pane)</h3><p>封包列表的面板中显示，编号，时间戳，源地址，目标地址，协议，长度，以及封包信息。 你可以看到不同的协议用了不同的颜色显示。</p>
+<p>你也可以修改这些显示颜色的规则，  View -&gt;Coloring Rules.</p>
+<p><img src="https://img-blog.csdn.net/20130709124135937?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>封包详细信息 (Packet Details Pane)</p>
+<p>这个面板是我们最重要的，用来查看协议中的每一个字段。</p>
+<p>各行信息分别为</p>
+<p>Frame:   <strong>物理层的数据帧概况</strong></p>
+<p>Ethernet II: <strong>数据链路层以太网帧头部信息</strong></p>
+<p>Internet Protocol Version 4: <strong>互联网层IP包头部信息</strong></p>
+<p>Transmission Control Protocol:  <strong>传输层T的数据段头部信息，此处是TCP</strong></p>
+<p>Hypertext Transfer Protocol:  <strong>应用层的信息，此处是HTTP协议</strong></p>
+<p>wireshark与对应的OSI七层模型</p>
+<p><img src="https://img-blog.csdn.net/20130709124459953?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>TCP包的具体内容</p>
+<p>从下图可以看到wireshark捕获到的TCP包中的每个字段。</p>
+<p><img src="https://img-blog.csdn.net/20130709124644406?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>实例分析TCP三次握手过程</p>
+<p>看到这里， 基本上对wireshak有了初步了解， 现在我们看一个TCP三次握手的实例：</p>
+<p> 三次握手过程为</p>
+<p>这次我们用wireshark实际分析下三次握手的过程。</p>
+<p>打开wireshark, 打开浏览器输入 <a href="https://blog.csdn.net/qq_41079177?t=1" target="_blank" rel="noopener">https://blog.csdn.net/qq_41079177?t=1</a></p>
+<p>在wireshark中输入http过滤， 然后选中GET /xifeijian HTTP/1.1的那条记录，右键然后点击”Follow TCP Stream”,</p>
+<p>这样做的目的是为了得到与浏览器打开网站相关的数据包，将得到如下图：</p>
+<p><img src="https://img-blog.csdn.net/20130709124941515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p><strong>图中可以看到wireshark截获到了三次握手的三个数据包。第四个包才是HTTP的， 这说明HTTP的确是使用TCP建立连接的。</strong></p>
+<p>第一次握手数据包</p>
+<p>客户端发送一个TCP，标志位为SYN，序列号为0， 代表客户端请求建立连接。 如下图</p>
+<p><img src="https://img-blog.csdn.net/20130709125013031?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>第二次握手的数据包</p>
+<p>服务器发回确认包, 标志位为 SYN,ACK. 将确认序号(Acknowledgement Number)设置为客户的I S N加1以.即0+1=1, 如下图</p>
+<p><img src="https://img-blog.csdn.net/20130709125444500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>第三次握手的数据包</p>
+<p>客户端再次发送确认包(ACK) SYN标志位为0,ACK标志位为1.并且把服务器发来ACK的序号字段+1,放在确定字段中发送给对方.并且在数据段放写ISN的+1, 如下图:</p>
+<p><img src="https://img-blog.csdn.net/20130709133428281?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlmZWlqaWFu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<h2 id="就这样通过TCP三次握手，建立了连接。"><a href="#就这样通过TCP三次握手，建立了连接。" class="headerlink" title="就这样通过TCP三次握手，建立了连接。"></a>就这样通过TCP三次握手，建立了连接。</h2>
     </div>
 
     
