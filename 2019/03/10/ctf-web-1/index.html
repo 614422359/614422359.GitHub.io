@@ -11,8 +11,7 @@
     <!--Description-->
     
         <meta name="description" content="关于ping命令注入截断问题
-0x01:题目特点对于看到ping或者ping命令却没有弄waf时就要想到命令注入。
-0x02:命令注入方法看到ping命令就可以利用截断来执行新的命令。首先测试所有的截断符号：‘$’‘;’‘|’‘-’‘(’‘)’‘反引号’‘||’‘&amp;amp;&amp;amp;’‘&amp;amp;’">
+0x01:题目特点对于看到ping或者ping命令却没有弄waf时就要想到命令注入。">
     
 
     <!--Author-->
@@ -169,6 +168,7 @@
         <!-- Post Content -->
         <h1 id="关于ping命令注入截断问题"><a href="#关于ping命令注入截断问题" class="headerlink" title="关于ping命令注入截断问题"></a>关于ping命令注入截断问题</h1><hr>
 <h2 id="0x01-题目特点"><a href="#0x01-题目特点" class="headerlink" title="0x01:题目特点"></a>0x01:题目特点</h2><p>对于看到ping或者ping命令却没有弄waf时就要想到命令注入。</p>
+<a id="more"></a>
 <h2 id="0x02-命令注入方法"><a href="#0x02-命令注入方法" class="headerlink" title="0x02:命令注入方法"></a>0x02:命令注入方法</h2><p>看到ping命令就可以利用截断来执行新的命令。<br>首先测试所有的截断符号：<br>‘$’<br>‘;’<br>‘|’<br>‘-’<br>‘(’<br>‘)’<br>‘反引号’<br>‘||’<br>‘&amp;&amp;’<br>‘&amp;’<br>‘}’<br>‘{’<br>‘%0a’可以当作空格来用；<br>利用截断符号配合普通命令简单问题基本就出来；<br>例如：ip=127.0.0.1;cat /home/flag.txt</p>
 <p>简单题目的flag就出来了。</p>
 <h2 id="0x03-命令注入原因"><a href="#0x03-命令注入原因" class="headerlink" title="0x03:命令注入原因"></a>0x03:命令注入原因</h2><p>系统提供命令执行类函数主要方便处理相关应用场景的功能.而当不合理的使用这类函数，同时调用的变量未考虑安全因素，就会执行恶意的命令调用，被攻击利用。</p>
