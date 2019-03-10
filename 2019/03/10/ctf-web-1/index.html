@@ -10,6 +10,10 @@
 
     <!--Description-->
     
+        <meta name="description" content="关于ping命令注入截断问题
+0x01:题目特点对于看到ping或者ping命令却没有弄waf时就要想到命令注入。
+0x02:命令注入方法看到ping命令就可以利用截断来执行新的命令。首先测试所有的截断符号：‘$’‘;’‘|’‘-’‘(’‘)’‘反引号’‘||’‘&amp;amp;&amp;amp;’‘&amp;amp;’">
+    
 
     <!--Author-->
     
@@ -18,7 +22,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Kirito">
+        <meta property="og:title" content="ctf_web">
     
 
     <!--Open Graph Description-->
@@ -29,7 +33,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website">
+        <meta property="og:type" content="article">
     
 
     <!--Page Cover-->
@@ -40,7 +44,7 @@
 
     <!-- Title -->
     
-    <title>Archives: 2018/10 - Kirito</title>
+    <title>ctf_web - Kirito</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -127,9 +131,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -137,115 +139,56 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">2018/10</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2018/12/03/KMS-1/">
-        <span class="archive-date">
-            Dec 2018
-        </span>
-        KMS激活office
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2019/03/10/ctf-web-1/">
+                ctf_web
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2019-03-10</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="关于ping命令注入截断问题"><a href="#关于ping命令注入截断问题" class="headerlink" title="关于ping命令注入截断问题"></a>关于ping命令注入截断问题</h1><hr>
+<h2 id="0x01-题目特点"><a href="#0x01-题目特点" class="headerlink" title="0x01:题目特点"></a>0x01:题目特点</h2><p>对于看到ping或者ping命令却没有弄waf时就要想到命令注入。</p>
+<h2 id="0x02-命令注入方法"><a href="#0x02-命令注入方法" class="headerlink" title="0x02:命令注入方法"></a>0x02:命令注入方法</h2><p>看到ping命令就可以利用截断来执行新的命令。<br>首先测试所有的截断符号：<br>‘$’<br>‘;’<br>‘|’<br>‘-’<br>‘(’<br>‘)’<br>‘反引号’<br>‘||’<br>‘&amp;&amp;’<br>‘&amp;’<br>‘}’<br>‘{’<br>‘%0a’可以当作空格来用；<br>利用截断符号配合普通命令简单问题基本就出来；<br>例如：ip=127.0.0.1;cat /home/flag.txt</p>
+<p>简单题目的flag就出来了。</p>
+<h2 id="0x03-命令注入原因"><a href="#0x03-命令注入原因" class="headerlink" title="0x03:命令注入原因"></a>0x03:命令注入原因</h2><p>系统提供命令执行类函数主要方便处理相关应用场景的功能.而当不合理的使用这类函数，同时调用的变量未考虑安全因素，就会执行恶意的命令调用，被攻击利用。</p>
+<h2 id="0x04-方法"><a href="#0x04-方法" class="headerlink" title="0x04:方法"></a>0x04:方法</h2><p>此类命令执行函数依赖PHP配置文件的设置，如果配置选项 safe_mode 设置为 off，此类命令不可执行，必须设置为 On<br>的情况下，才可执行。PHP 默认是关闭的。在安全模式下，只有在特定目录中的外部程序才可以被执行，对其它程序的调用将被拒绝。这个目录可以在php.ini文件中用 safe_mode_exec_dir指令，或在编译PHP是加上 –with-exec-dir选项来指定，默认是/usr/local/php /bin。<br>1：检测一阶命令注入的最佳方式是尝试执行一个sleep命令<br>2：在外部可以访问的端口上生成一个shell（仅适用于自定义netcat构建）：nc -l -n -vv -p 80 -e /bin/bash (unix) 或 nc -l -n -vv -p 80 -e cmd.exe (windows)。<br>3：如果想要知道目标主机名的长度，我们可以将主机名的输出通过管道符传递给wc -c命令。</p>
+<h2 id="另外还有很多方法来进行命令注入。等我详细阅读之后继续整理"><a href="#另外还有很多方法来进行命令注入。等我详细阅读之后继续整理" class="headerlink" title="另外还有很多方法来进行命令注入。等我详细阅读之后继续整理"></a>另外还有很多方法来进行命令注入。等我详细阅读之后继续整理</h2>
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2018/10/22/LOIC/">
-        <span class="archive-date">
-            Oct 2018
-        </span>
-        LOIC
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/10/21/The-first/">
-        <span class="archive-date">
-            Oct 2018
-        </span>
-        The-first
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2019/03/10/ctf-web-1/">
-        <span class="archive-date">
-            Mar 2019
-        </span>
-        ctf_web
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/10/31/ctf-web/">
-        <span class="archive-date">
-            Oct 2018
-        </span>
-        ctf_web
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/11/08/forensics/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        forensics
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/11/29/nginx-1/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        nginx_1
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/11/11/web-1/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        文件包含漏洞利用
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/11/08/web-2/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        PHP反序列化详解
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/11/15/web-3/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        变量覆盖问题
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2018/11/22/wireshark/">
-        <span class="archive-date">
-            Nov 2018
-        </span>
-        wireshark
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 

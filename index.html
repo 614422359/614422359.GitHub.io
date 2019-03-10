@@ -147,6 +147,38 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2019/03/10/ctf-web-1/">
+                ctf_web
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2019-03-10</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="关于ping命令注入截断问题"><a href="#关于ping命令注入截断问题" class="headerlink" title="关于ping命令注入截断问题"></a>关于ping命令注入截断问题</h1><hr>
+<h2 id="0x01-题目特点"><a href="#0x01-题目特点" class="headerlink" title="0x01:题目特点"></a>0x01:题目特点</h2><p>对于看到ping或者ping命令却没有弄waf时就要想到命令注入。</p>
+<h2 id="0x02-命令注入方法"><a href="#0x02-命令注入方法" class="headerlink" title="0x02:命令注入方法"></a>0x02:命令注入方法</h2><p>看到ping命令就可以利用截断来执行新的命令。<br>首先测试所有的截断符号：<br>‘$’<br>‘;’<br>‘|’<br>‘-’<br>‘(’<br>‘)’<br>‘反引号’<br>‘||’<br>‘&amp;&amp;’<br>‘&amp;’<br>‘}’<br>‘{’<br>‘%0a’可以当作空格来用；<br>利用截断符号配合普通命令简单问题基本就出来；<br>例如：ip=127.0.0.1;cat /home/flag.txt</p>
+<p>简单题目的flag就出来了。</p>
+<h2 id="0x03-命令注入原因"><a href="#0x03-命令注入原因" class="headerlink" title="0x03:命令注入原因"></a>0x03:命令注入原因</h2><p>系统提供命令执行类函数主要方便处理相关应用场景的功能.而当不合理的使用这类函数，同时调用的变量未考虑安全因素，就会执行恶意的命令调用，被攻击利用。</p>
+<h2 id="0x04-方法"><a href="#0x04-方法" class="headerlink" title="0x04:方法"></a>0x04:方法</h2><p>此类命令执行函数依赖PHP配置文件的设置，如果配置选项 safe_mode 设置为 off，此类命令不可执行，必须设置为 On<br>的情况下，才可执行。PHP 默认是关闭的。在安全模式下，只有在特定目录中的外部程序才可以被执行，对其它程序的调用将被拒绝。这个目录可以在php.ini文件中用 safe_mode_exec_dir指令，或在编译PHP是加上 –with-exec-dir选项来指定，默认是/usr/local/php /bin。<br>1：检测一阶命令注入的最佳方式是尝试执行一个sleep命令<br>2：在外部可以访问的端口上生成一个shell（仅适用于自定义netcat构建）：nc -l -n -vv -p 80 -e /bin/bash (unix) 或 nc -l -n -vv -p 80 -e cmd.exe (windows)。<br>3：如果想要知道目标主机名的长度，我们可以将主机名的输出通过管道符传递给wc -c命令。</p>
+<h2 id="另外还有很多方法来进行命令注入。等我详细阅读之后继续整理"><a href="#另外还有很多方法来进行命令注入。等我详细阅读之后继续整理" class="headerlink" title="另外还有很多方法来进行命令注入。等我详细阅读之后继续整理"></a>另外还有很多方法来进行命令注入。等我详细阅读之后继续整理</h2>
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2018/12/03/KMS-1/">
                 KMS激活office
             </a>
@@ -397,41 +429,24 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/10/21/The-first/">
-                The-first
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-10-21</span>
-            
-            
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <h1 id="nc的介绍和基本使用"><a href="#nc的介绍和基本使用" class="headerlink" title="nc的介绍和基本使用"></a>nc的介绍和基本使用</h1><hr>
-<p>今天是搭建好博客的第二天qwq，百团大战热闹的很（除了我没中过一次将之外）都还不错，转眼间又到了九点半了，觉得日子过得真快啊。</p>
-<p>“时间如沙，我握不住她也握不住它”（讲正事：</p>
-<p>nc是netcat的简写，有着网络界的瑞士军刀美誉。因为它短小精悍、功能实用，被设计为一个简单、可靠的网络工具。</p>
-        </div>
-        <a href="/2018/10/21/The-first/" class="read-more">Read More</a>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
 
 
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrap-pagination">
+                <a class="disabled" href="/">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+                <a class="" href="/page/2/">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -456,6 +471,10 @@
         <ul>
             
             <li>
+                <a class="footer-post" href="/2019/03/10/ctf-web-1/">ctf_web</a>
+            </li>
+            
+            <li>
                 <a class="footer-post" href="/2018/12/03/KMS-1/">KMS激活office</a>
             </li>
             
@@ -465,10 +484,6 @@
             
             <li>
                 <a class="footer-post" href="/2018/11/22/wireshark/">wireshark</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/11/15/web-3/">变量覆盖问题</a>
             </li>
             
         </ul>
@@ -577,7 +592,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="footer-copyright">
-                    @Untitled. All right reserved | Design & Hexo <a href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                    @Untitled. All right reserved | Design & Kirito <a href="https://blog.csdn.net/qq_41079177/">My CSDN</a>
                 </div>
             </div>
         </div>
