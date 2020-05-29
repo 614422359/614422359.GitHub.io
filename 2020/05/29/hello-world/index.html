@@ -10,8 +10,7 @@
 
     <!--Description-->
     
-        <meta name="description" content="phpstudy(xampp)+DVWA的搭建使用以及过程中遇到的问题0x01：DVWA简介（来自官方文档翻译）：该死的漏洞的Web应用
-该死脆弱的Web应用程序（DVWA）是一个PHP / MySQL的Web应用程序，该死的脆弱。其主要目标是帮助安全专业人员在法律环境中测试他们的技能和工具，帮助Web开发人员更好地了解保护Web应用程序的过程，并帮助学生和教师了解受控类中的Web应用程序安全性房间环境。">
+        <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
     
 
     <!--Author-->
@@ -21,7 +20,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="DVWA">
+        <meta property="og:title" content="Hello World">
     
 
     <!--Open Graph Description-->
@@ -43,7 +42,7 @@
 
     <!-- Title -->
     
-    <title>DVWA - Kirito</title>
+    <title>Hello World - Kirito</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -147,13 +146,13 @@
 
     <div class="post-header">
         <h1 class="title">
-            <a href="/2019/03/10/DVWA/">
-                DVWA
+            <a href="/2020/05/29/hello-world/">
+                Hello World
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2019-03-10</span>
+                <span class="date">2020-05-29</span>
             
             
             
@@ -166,15 +165,15 @@
         
 
         <!-- Post Content -->
-        <h1 id="phpstudy-xampp-DVWA的搭建使用以及过程中遇到的问题"><a href="#phpstudy-xampp-DVWA的搭建使用以及过程中遇到的问题" class="headerlink" title="phpstudy(xampp)+DVWA的搭建使用以及过程中遇到的问题"></a>phpstudy(xampp)+DVWA的搭建使用以及过程中遇到的问题</h1><h2 id="0x01：DVWA简介（来自官方文档翻译）："><a href="#0x01：DVWA简介（来自官方文档翻译）：" class="headerlink" title="0x01：DVWA简介（来自官方文档翻译）："></a>0x01：DVWA简介（来自官方文档翻译）：</h2><p>该死的漏洞的Web应用</p>
-<p>该死脆弱的Web应用程序（DVWA）是一个PHP / MySQL的Web应用程序，该死的脆弱。其主要目标是帮助安全专业人员在法律环境中测试他们的技能和工具，帮助Web开发人员更好地了解保护Web应用程序的过程，并帮助学生和教师了解受控类中的Web应用程序安全性房间环境。</p>
-<a id="more"></a>
-<p>DVWA的目的是<strong>实现一些最常见的Web漏洞</strong>，具有<strong>各种难度级别</strong>，具有简单直接的界面。<br>请注意，此软件有<strong>记录和未记录的漏洞</strong>。这是故意的。我们鼓励您尝试尽可能多地发现问题。</p>
-<hr>
-<p>DVWA是包含<a href="http://www.owasp.org.cn/" target="_blank" rel="noopener">OWASP</a>排名前十的漏洞，来帮助入门安全的小白进行学习的靶场。</p>
-<h2 id="0x02-部署过程"><a href="#0x02-部署过程" class="headerlink" title="0x02:部署过程"></a>0x02:部署过程</h2><h3 id="1：下载phpstudy或者xampp。"><a href="#1：下载phpstudy或者xampp。" class="headerlink" title="1：下载phpstudy或者xampp。"></a>1：下载phpstudy或者xampp。</h3><p><a href="http://phpstudy.php.cn/download.html" target="_blank" rel="noopener">PHPstudy</a><br><a href="https://www.apachefriends.org/index.html" target="_blank" rel="noopener">XAMPP官方链接</a><br>下载完成之后开启服务，访问本地：<a href="http://127.0.0.1" target="_blank" rel="noopener">http:127.0.0.1</a><br>看是否能正常运行。<br><strong>可能出现的问题：</strong><br>1：没有VC运行库：<br><a href="http://www.microsoft.com/zh-CN/download/details.aspx?id=5582" target="_blank" rel="noopener">32位VC下载地址</a><br><a href="http://www.microsoft.com/zh-CN/download/details.aspx?id=15336" target="_blank" rel="noopener">64位VC下载地址</a></p>
-<h3 id="2-下载，部署DVWA"><a href="#2-下载，部署DVWA" class="headerlink" title="2:下载，部署DVWA"></a>2:下载，部署DVWA</h3><p><a href="http://www.dvwa.co.uk/" target="_blank" rel="noopener">DVWA下载</a><br>下载解压之后放到phpstudy下的WWW文件夹中。xampp同理。<br>同时进行设置mysql的密码，默认密码为：root<br>修改完毕之后访问<strong>DVWA/config/config.inc.php.dist</strong><br>将<strong>config.inc.php.dist</strong>重命名为<strong>config.inc.php</strong>并且修改文件其中内容：<strong>db_password</strong>修改为刚才重设的密码。<br>然后启动php服务，访问：<a href="http://127.0.0.1/DVWA" target="_blank" rel="noopener">127.0.0.1/DVWA</a><br>登入，默认账户为：<strong>admin</strong>密码为：<strong>password</strong><br><strong>可能出现的问题：</strong><br>1：访问127.0.0.1/DVWA 不成功，并且显示链接不到mysql数据库（allow_url_include：已禁用）<br>解决方案：<br>编辑 dvwa/config/config.inc.php这个配置文件<br>$_DVWA[ ‘recaptcha_public_key’ ] = ‘’;<br>$_DVWA[ ‘recaptcha_private_key’ ] = ‘’;<br>key值手动添加两个：<br>Site key:<br>6LdJJlUUAAAAAH1Q6cTpZRQ2Ah8VpyzhnffD0mBb<br>Secret key:<br>6LdJJlUUAAAAAM2a3HrgzLczqdYp4g05EqDs-W4K<br>之后修改配置文件：C:\xampp\php\php.ini（文件路径不一定都相同，自己去找找自己的路径）<br>找到：<strong>allow_url_include=Off</strong><br>修改为：<strong>allow_url_include=On</strong><br>访问DVWA错误页面翻译一下，里面会给出应该修改的配置，都在文件中，按照配置来。<br><strong>如果按照上面方法设置完成，也不会报错，却依旧链接不上mysql，那直接把之前修改的mysql密码配置文件写成root，因为你根本没修改密码成功</strong>。</p>
-<h2 id="0x03：之后的使用"><a href="#0x03：之后的使用" class="headerlink" title="0x03：之后的使用"></a>0x03：之后的使用</h2><p>DVWA部署成功之后就可以开始了使用了操作还是蛮简单的，至于这部分，我还开始体验，过两天在补上。。（：溜了</p>
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
     </div>
 
