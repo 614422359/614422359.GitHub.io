@@ -147,8 +147,50 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2020/05/29/hello-world/">
-                Hello World
+            <a href="/2020/05/30/Move-Hexo/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-05-30</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="记录Hexo的一次迁移"><a href="#记录Hexo的一次迁移" class="headerlink" title="记录Hexo的一次迁移"></a>记录Hexo的一次迁移</h1><p><a name="gyYvH"></a></p>
+<h3 id="0x00-准备"><a href="#0x00-准备" class="headerlink" title="0x00 准备"></a>0x00 准备</h3><p>由于更换了主力笔记本的原因，以前用的hexo+GitHub做的博客就再也没有更新，到现在为止也是在使用语雀（语雀打钱！<br>今天想着还是做回来吧毕竟这么个性的博客，我自己也得整一个，所以今天来大刀阔斧（稍微动工，来进行一次迁移。<br>重要文件：</p>
+<pre><code>- _config.yml    （hexo的重要配置文件，用来绑定git上面的仓库
+- theme/          （博客主题文件，用来配置hexo博客的主题
+- source/            （博客文章源文件，里面存在着一个md格式的文章以及文章资源保存的文件夹
+- scaffold/
+- package.json
+- .gitignore
+</code></pre><p>也就是之前笔记本电脑中的hexo文件，这里直接复制一下覆盖新电脑中的hexo文件就行。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/314003/1590827433597-8d5786e2-aca8-4625-b56f-d36a07dfef66.png#align=left&amp;display=inline&amp;height=249&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=498&amp;originWidth=1204&amp;size=49733&amp;status=done&amp;style=none&amp;width=602" alt="image.png"><br><a name="UCxyg"></a></p>
+<h3 id="0x01-hexo-GitHub-新电脑安装"><a href="#0x01-hexo-GitHub-新电脑安装" class="headerlink" title="0x01 hexo+GitHub 新电脑安装"></a>0x01 hexo+GitHub 新电脑安装</h3><p>首先安装，在安装hexo之前首先进行npm的安装，好奇npm是什么的可以看这里：<a href="https://www.npmjs.cn/getting-started/what-is-npm/" target="_blank" rel="noopener">没错就是这der</a><br>npm安装地址：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">https://nodejs.org/en/download/</a><br>按照需求安装就可以了。<br>npm安装成功测试使用：cmd 进行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm -v</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/314003/1590829008935-54bf4bb3-a996-4bc6-a19d-4959a43ac20f.png#align=left&amp;display=inline&amp;height=62&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=122&amp;originWidth=790&amp;size=4802&amp;status=done&amp;style=none&amp;width=395" alt="image.png"><br>出现之后说明npm安装成功。<br>然后进行git的安装，git需要安装和绑定自己的github账号，这个放在下一个说。<br>安装好了npm之后我们直接是由cli命令进行hexo的安装就可以了。<br>然后将之前迁移的hexo配置文件直接覆盖到新的hexo文件下就可以了。<br><a name="xwDDa"></a></p>
+<h3 id="0x02-git安装和配置"><a href="#0x02-git安装和配置" class="headerlink" title="0x02 git安装和配置"></a>0x02 git安装和配置</h3><p>git安装以及和GitHub的关联。<br>git下载：<a href="https://git-scm.com/downloads" target="_blank" rel="noopener">https://git-scm.com/downloads</a><br>安装之后右击出现bash然后进入。<br>进行git配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"你的GitHub用户名"</span></span><br><span class="line">git config --global user.email <span class="string">"你的GitHub注册邮箱"</span></span><br><span class="line">ssh-keygen -t rsa -C <span class="string">"你的GitHub注册邮箱"</span> //生成密钥文件，存在于本机系统盘.ssh文件中</span><br></pre></td></tr></table></figure></p>
+<p>打开其中的文件，将其中的内容复制下来，进入web的GitHub<br><img src="https://cdn.nlark.com/yuque/0/2020/png/314003/1590829503319-9145b129-d6d1-4e85-8c94-593d2d7462b4.png#align=left&amp;display=inline&amp;height=103&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=206&amp;originWidth=1089&amp;size=20180&amp;status=done&amp;style=none&amp;width=544.5" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/314003/1590829536438-52965298-e8e2-4e50-bca3-4b67c9e3f5c3.png#align=left&amp;display=inline&amp;height=81&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=162&amp;originWidth=878&amp;size=15026&amp;status=done&amp;style=none&amp;width=439" alt="image.png"><br>进入GitHub，选取settings-&gt;<a href="https://github.com/settings/keys" target="_blank" rel="noopener">SSH and GPG keys</a>-&gt;NewSSH key<br><img src="https://cdn.nlark.com/yuque/0/2020/png/314003/1590829616531-46afc92a-6995-49f6-9c4b-7127b9a9d915.png#align=left&amp;display=inline&amp;height=272&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=544&amp;originWidth=982&amp;size=28839&amp;status=done&amp;style=none&amp;width=491" alt="image.png"><br>title随意，然后将刚才复制的密钥粘贴进去。<br>此时进入git bash 中，输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure></p>
+<p>显示如下，则说明成功：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/314003/1590829796535-1f46ce19-f639-4f5e-9491-174e4521f193.png#align=left&amp;display=inline&amp;height=61&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=122&amp;originWidth=735&amp;size=12986&amp;status=done&amp;style=none&amp;width=367.5" alt="image.png"><br><a name="j5Swk"></a></p>
+<h3 id="0x03-Hexo的安装以及配置"><a href="#0x03-Hexo的安装以及配置" class="headerlink" title="0x03 Hexo的安装以及配置"></a>0x03 Hexo的安装以及配置</h3><p>说到hexo，我们之前已经安装了npm，此时我们需要使用npm直接安装hexo，打开cmd<br><code>npm install -g hexo-cli</code><br>进行安装，安装完成之后我们要进行hexo插件安装，hexo部署插件：<br><code>npm install hexo-deployer-git --save</code><br>到现在为止，新电脑的准备工作完毕。<br><a name="kqYx1"></a></p>
+<h3 id="0x04-Hexo覆盖以及配置中注意事项"><a href="#0x04-Hexo覆盖以及配置中注意事项" class="headerlink" title="0x04 Hexo覆盖以及配置中注意事项"></a>0x04 Hexo覆盖以及配置中注意事项</h3><p>可能会出现以下两种情况，<br>1.无法部署：<br>原因是没有安装hexo部署插件<br>2.每次hexo进行部署的时候就会要求登录<br>原因是配置文件出现了问题，由于原来配置文件中 _config.yml<br><img src="https://cdn.nlark.com/yuque/0/2020/png/314003/1590830966930-92ca725f-d05f-42fa-a2f4-49e5716f78e9.png#align=left&amp;display=inline&amp;height=87&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=173&amp;originWidth=1388&amp;size=18426&amp;status=done&amp;style=none&amp;width=694" alt="image.png"><br>这里repository 绑定的是：<a href="https://github.com/用户名/仓库名。我估计现在这样的写法被废弃了，之前进行git绑定的时候我们用的是`ssh" target="_blank" rel="noopener">https://github.com/用户名/仓库名。我估计现在这样的写法被废弃了，之前进行git绑定的时候我们用的是`ssh</a> <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a><code>&lt;br /&gt;所以现在我们配置稍微进行一些修改修改成：</code><a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:用户名/仓库名.github.io.git`<br><strong>最后一定要加上git</strong><br>解决现在的问题，已经可以使用。</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/05/29/New-Life/">
+                New_Life
             </a>
         </h1>
         <div class="post-info">
@@ -162,16 +204,7 @@
 
     
         <div class="content">
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
+            
         </div>
     
 
@@ -403,35 +436,6 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/11/08/forensics/">
-                forensics
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-11-08</span>
-            
-            
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <h1 id="内存取证之Volatility的使用"><a href="#内存取证之Volatility的使用" class="headerlink" title="内存取证之Volatility的使用"></a>内存取证之Volatility的使用</h1><hr>
-<p><strong>Volatility 简介：</strong></p>
-<p>Volatility是一款开源的，基于Python开发的内存取证工具集，可以分析内存中的各种数据。Volatility支持对32位或64位Wnidows、Linux、Mac、Android操作系统的RAM数据进行提取与分析。</p>
-        </div>
-        <a href="/2018/11/08/forensics/" class="read-more">Read More</a>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
@@ -474,7 +478,11 @@
         <ul>
             
             <li>
-                <a class="footer-post" href="/2020/05/29/hello-world/">Hello World</a>
+                <a class="footer-post" href="/2020/05/30/Move-Hexo/">Untitled</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/05/29/New-Life/">New_Life</a>
             </li>
             
             <li>
@@ -483,10 +491,6 @@
             
             <li>
                 <a class="footer-post" href="/2019/03/10/DVWA/">DVWA</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2019/03/10/ctf-web-1/">ctf_web</a>
             </li>
             
         </ul>
